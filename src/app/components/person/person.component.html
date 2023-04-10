@@ -1,0 +1,117 @@
+<div class="container">
+    <h1>Empleados</h1>
+     <div class="mensaje">
+       <label>Usted esta:</label><p>{{optionActual}}</p>
+     </div>
+
+    <div class="row">
+        <div class="col-md-4">
+          <form [formGroup]="personaForm" (ngSubmit)="isEdit ? onUpdate() : onSubmit()">
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nombre" formControlName="nombre" required>
+            </div>
+            <div class="mb-3">
+              <label for="estado_civil" class="form-label">Estado civil</label>
+              <select class="form-select" id="estado_civil" formControlName="estado_civil" required>
+                <option value="">Seleccionar</option>
+                <option *ngFor="let opcion of opciones" [value]="opcion.id">{{ opcion.description}}</option>
+
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
+              <input type="date" class="form-control" id="fecha_nacimiento" formControlName="fecha_nacimiento" required>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-4">
+          <form [formGroup]="personaForm" (ngSubmit)="isEdit ? onUpdate() : onSubmit()">
+             <div class="mb-3">
+              <label for="apellido" class="form-label">Apellido</label>
+              <input type="text" class="form-control" id="apellido" formControlName="apellido" required>
+            </div>
+
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="tiene_hermanos" formControlName="tiene_hermanos">
+              <label class="form-check-label" for="tiene_hermanos">¿Tiene hermanos?</label>
+            </div>
+
+            <div class="mb-3">
+              <label for="foto" class="form-label">Foto de usuario</label>
+              <input type="file" (change)="handleFileInput($event)" formControlName="file">
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="!personaForm.valid">{{textButton}}</button>
+            <button type="button" class="btn btn-secondary" (click)="onReset()" >Cancelar</button>
+          </form>
+        </div>
+        <!-- <div class="col-md-4">
+          <form [formGroup]="personaForm" (ngSubmit)="isEdit ? onUpdate() : onSubmit()">
+
+          </form>
+        </div> -->
+      </div>
+      <br> <br> <br> <br>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="optionselect">
+              <div>
+                <h5>Seleccione los Items a ver </h5>
+              </div>
+
+               <select (change)="onPageSizeChange($event)">
+
+                <option *ngFor="let size of  itemPerPage">
+                 {{size}}
+                </option>
+
+               </select>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                      <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Fecha de nacimiento</th>
+                        <th>Estado civil</th>
+                        <th>Foto</th>
+                        <th>Tiene hermanos</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let persona of listPersonas | paginate:{
+                      itemsPerPage:pageSize,
+                      currentPage:currentPage,
+                      totalItems: numberRecords
+                    }; let i=index ">
+                      <td>{{ persona.id }}</td>
+                        <td>{{ persona.name }}</td>
+                        <td>{{ persona.lastName }}</td>
+                        <td>{{ persona.birthDate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{ persona.maritalStatus }}</td>
+                        <td><img [src]="'data:image/jpeg;base64,' + persona.photo" alt="Photo"  height="50" width="50"></td>
+                        <td>{{ persona.hasSiblings ? 'Sí' : 'No' }}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" (click)="onEdit(persona)">Editar</button>
+                            <button type="button" class="btn btn-danger" (click)="onDelete(persona)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+               <pagination-controls
+               previousLabel="Prev"
+               nextLabel="Next"
+               (pageChange)="onPageChanged($event)"
+               >
+
+               </pagination-controls>
+            </div>
+
+        </div>
+
+    </div>
+</div>
