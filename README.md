@@ -1,4 +1,4 @@
-# Evertect-Prueba-Front
+# Front-Angular 
 Proyecto Angular
 Despues de Clonar el Proyecto Ejecutar el Comando   npm install.
 
